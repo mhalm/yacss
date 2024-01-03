@@ -68,7 +68,10 @@
 		payloadToSend = '';
 	}
 
-	function send(message: string) {
+	export function send(message: string) {
+		if (!connected) {
+			throw Error('no connection');
+		}
 		ws.send(message);
 		addMsg(MessageType.SENT, message);
 	}
