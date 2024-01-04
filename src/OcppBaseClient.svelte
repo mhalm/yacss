@@ -55,7 +55,7 @@
 		requests = [...pendingClientRequests.values()];
 	}
 
-	function onReceived(data: string): void {
+	export function onReceived(data: string): void {
 		if (data[1] == '2') {
 			const callFrame: [number, string, string, object] = JSON.parse(data);
 			const req: OcppServerRequest = new OcppServerRequest(
@@ -75,6 +75,8 @@
 				pendingClientReq!.response = new OcppResponse(payload);
 				requests = [...pendingClientRequests.values()];
 			}
+		} else {
+			console.log('Cannot parse data: ', data);
 		}
 	}
 	
@@ -103,6 +105,8 @@
 						pending
 					{:else if req.response.payload instanceof Error}
 						failed: {req.response.payload.message}
+					{:else}
+					 	response: {JSON.stringify(req.response.payload)}
 					{/if}
 				</td>
 			</tr>

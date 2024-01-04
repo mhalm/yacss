@@ -22,4 +22,4 @@
 
 <!-- How can we inject the dependency to the websocket sending function into the component? This solution here seems kinda ugly. -->
 <OcppBaseClient bind:this={ocppBase} bind:websocketSender={send}></OcppBaseClient>
-<Websocket bind:this={websocket} />
+<Websocket bind:this={websocket} on:received={data => ocppBase.onReceived(data.detail)} />

@@ -2,12 +2,16 @@
 	import {
 		receivedMessage as createReceivedMessage,
 		MessageType,
+		sentMessage,
 		WebsocketEvent
 	} from '$lib/websocketMessage';
+	import { createEventDispatcher } from 'svelte';
 	import WebsocketEventLog from './WebsocketEventLog.svelte';
 	import MessageTable from './WebsocketEventLog.svelte';
 
 	export let connected = false;
+
+	const dispatcher = createEventDispatcher();
 
 	var ws: WebSocket;
 
@@ -18,6 +22,8 @@
 	let payloadToSend: string;
 
 	$: canSend = payloadToSend != '' && payloadToSend != null && connected;
+
+	let msgFromServer: string;
 
 	function toggleConnection() {
 		if (!connected) {
@@ -32,10 +38,13 @@
 		ws.onerror = onError;
 		ws.onclose = onClose;
 		ws.onopen = onOpen;
-		ws.onmessage = function message(msg) {
-			messages = [...messages, createReceivedMessage(msg.data.toString())];
-		};
+		ws.onmessage = msg => receive(msg.data.toString());
 	}
+
+	function receive(msg: string) {
+			messages = [...messages, createReceivedMessage(msg)];
+			dispatcher("received", msg);
+		};
 
 	function onOpen(ev: Event): void {
 		addMsg(MessageType.CONNECTION_OPENED, '');
@@ -89,5 +98,12 @@
 	<div>
 		<input bind:value={payloadToSend} />
 		<button on:click={onSendButtonClicked} disabled={!canSend}>Send!</button>
+	</div>
+
+	<h2>Simulate server send</h2>	
+	<div>
+		<textarea bind:value={msgFromServer} />
+		<button on:click={e => receive(msgFromServer)}>Simulate send from Server</button>
+
 	</div>
 </div>
