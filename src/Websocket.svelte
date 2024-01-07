@@ -38,13 +38,13 @@
 		ws.onerror = onError;
 		ws.onclose = onClose;
 		ws.onopen = onOpen;
-		ws.onmessage = msg => receive(msg.data.toString());
+		ws.onmessage = (msg) => receive(msg.data.toString());
 	}
 
 	function receive(msg: string) {
-			messages = [...messages, createReceivedMessage(msg)];
-			dispatcher("received", msg);
-		};
+		messages = [...messages, createReceivedMessage(msg)];
+		dispatcher('received', msg);
+	}
 
 	function onOpen(ev: Event): void {
 		addMsg(MessageType.CONNECTION_OPENED, '');
@@ -100,10 +100,9 @@
 		<button on:click={onSendButtonClicked} disabled={!canSend}>Send!</button>
 	</div>
 
-	<h2>Simulate server send</h2>	
+	<h2>Simulate server send</h2>
 	<div>
 		<textarea bind:value={msgFromServer} />
-		<button on:click={e => receive(msgFromServer)}>Simulate send from Server</button>
-
+		<button on:click={(e) => receive(msgFromServer)}>Simulate send from Server</button>
 	</div>
 </div>
