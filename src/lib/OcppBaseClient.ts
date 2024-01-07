@@ -1,4 +1,3 @@
-
 import { readonly, writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
@@ -37,17 +36,11 @@ export class OcppClientRequest extends OcppRequest {
 class OcppServerRequest extends OcppRequest {}
 
 export class OcppBaseClient {
-
 	private pendingClientRequests: Map<string, OcppClientRequest> = new Map();
 
 	private requests: Writable<OcppClientRequest[]> = writable([]);
 
-	private websocketSender: (x: string) => void = console.log;
-	
-	constructor(sender: (data: string) => void) {
-		this.websocketSender = sender;
-
-	}	
+	public websocketSender: (x: string) => void = console.log;
 
 	public clientReqStore = readonly(this.requests);
 
@@ -82,7 +75,7 @@ export class OcppBaseClient {
 				console.log('Server sent call result without client req: ' + data);
 			} else {
 				pendingClientReq!.response = new OcppResponse(payload);
-			this.requests.set([...this.pendingClientRequests.values()]);
+				this.requests.set([...this.pendingClientRequests.values()]);
 			}
 		} else {
 			console.log('Cannot parse data: ', data);

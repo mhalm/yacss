@@ -3,13 +3,15 @@
 	import Websocket from '../Websocket.svelte';
 	import OcppBaseMessageLog from '../OcppBaseMessageLog.svelte';
 	import { OcppBaseClient } from '$lib/OcppBaseClient';
+	import { WebsocketClient } from '$lib/WebsocketClient';
 
-	var websocket: Websocket;
+	//create the headless ocpp classes
+	var websocketClient = new WebsocketClient();
+	var ocppBaseClient: OcppBaseClient = new OcppBaseClient();
 
-	let send: (x:string) => void = (x: string) => websocket.send(x);
-
-	var ocppBaseClient: OcppBaseClient = new OcppBaseClient(send);
-
+	//dependency injection
+	ocppBaseClient.websocketSender = (x) => websocketClient.send(x);
+	websocketClient.receiver = ocppBaseClient.onReceived;
 </script>
 
 <h1>Welcome to Yacss</h1>
@@ -19,6 +21,5 @@
 	>Send an Ocpp request</button
 >
 
-<!-- How can we inject the dependency to the websocket sending function into the component? This solution here seems kinda ugly. -->
-<OcppBaseMessageLog bind:ocppBaseClient={ocppBaseClient}></OcppBaseMessageLog>
-<Websocket bind:this={websocket} on:received={data => ocppBaseClient.onReceived(data.detail)} />
+<OcppBaseMessageLog {ocppBaseClient}></OcppBaseMessageLog>
+<Websocket {websocketClient} />
