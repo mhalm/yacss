@@ -66,7 +66,7 @@ export class OcppBaseClient {
 			if (pendingClientReq == undefined) {
 				console.log('Server sent call result without client req: ' + data);
 			} else {
-				pendingClientReq!.response = new OcppResponse(payload);
+				pendingClientReq.response = new OcppResponse(payload);
 				this.requests.set([...this.pendingClientRequests.values()]);
 			}
 		} else {
