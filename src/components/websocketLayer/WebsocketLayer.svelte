@@ -32,7 +32,7 @@
 <div>
 	<h2>Websocket</h2>
 	Url:<input bind:value={url} disabled={$connected} />
-	<button on:click={toggleConnection}>
+	<button class="btn btn-blue" on:click={toggleConnection}>
 		{$connected ? 'Disconnect' : 'Connect'}
 	</button>
 
@@ -40,14 +40,26 @@
 
 	<div>
 		<input bind:value={payloadToSend} />
-		<button on:click={onSendButtonClicked} disabled={!canSend}>Send!</button>
+		<button class="btn btn-blue" on:click={onSendButtonClicked} disabled={!canSend}>Send!</button>
 	</div>
 
 	<h2>Simulate server send</h2>
 	<div>
 		<textarea bind:value={msgFromServer} />
-		<button on:click={() => websocketClient.simulateReceive(msgFromServer)}
+		<button class="btn btn-blue" on:click={() => websocketClient.simulateReceive(msgFromServer)}
 			>Simulate send from Server</button
 		>
 	</div>
 </div>
+
+<style lang="postcss">
+	.btn {
+		@apply font-bold py-2 px-4 rounded;
+	}
+	.btn-blue {
+		@apply bg-blue-500 text-white;
+	}
+	.btn-blue:hover {
+		@apply bg-blue-700;
+	}
+</style>
