@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Websocket from '../Websocket.svelte';
-	import OcppBaseMessageLog from '../OcppBaseMessageLog.svelte';
+	import Websocket from '../components/websocketLayer/WebsocketLayer.svelte';
+	import OcppBaseMessageLog from '../components/OcppBaseMessageLog.svelte';
 	import { OcppBaseClient } from '$lib/OcppBaseClient';
 	import { WebsocketClient } from '$lib/WebsocketClient';
 

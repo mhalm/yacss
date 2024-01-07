@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { v4 as uuidv4 } from 'uuid';
 	import { OcppBaseClient, OcppClientRequest } from '$lib/OcppBaseClient';
 
 	export let ocppBaseClient: OcppBaseClient;
