@@ -46,7 +46,7 @@
 	<h2>Simulate server send</h2>
 	<div>
 		<textarea bind:value={msgFromServer} />
-		<button on:click={(e) => websocketClient.simulateReceive(msgFromServer)}
+		<button on:click={() => websocketClient.simulateReceive(msgFromServer)}
 			>Simulate send from Server</button
 		>
 	</div>

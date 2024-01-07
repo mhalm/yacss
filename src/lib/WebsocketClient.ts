@@ -1,22 +1,20 @@
-import { readonly, writable, get } from "svelte/store";
-import type { Writable } from "svelte/store";
-import { MessageType, WebsocketEvent } from "./websocketMessage";
-
+import { readonly, writable, get } from 'svelte/store';
+import type { Writable } from 'svelte/store';
+import { MessageType, WebsocketEvent } from './websocketMessage';
 
 export class WebsocketClient {
-
-    private connected = writable(false);
+	private connected = writable(false);
 
 	private ws: WebSocket | undefined;
 
 	private eventLog: Writable<WebsocketEvent[]> = writable([]);
 
-    public stores = {
-        eventLog: readonly(this.eventLog),
-        connected: readonly(this.connected)
-    };
+	public stores = {
+		eventLog: readonly(this.eventLog),
+		connected: readonly(this.connected)
+	};
 
-    public receiver: (data: string) => (void) = (data) => {};
+	public receiver: (data: string) => void = () => {};
 
 	public toggleConnection(url: string) {
 		if (!get(this.connected)) {
@@ -34,12 +32,12 @@ export class WebsocketClient {
 		this.addMsg(MessageType.SENT, message);
 	}
 
-    public simulateReceive = this.receive;
+	public simulateReceive = this.receive;
 
 	private connect(url: string) {
-        console.log("connecting");
+		console.log('connecting');
 		this.ws = new WebSocket(url);
-		this.ws.onerror = (e) => this.onError;
+		this.ws.onerror = () => this.onError;
 		this.ws.onclose = (e) => this.onClose(e);
 		this.ws.onopen = (e) => this.onOpen(e);
 		this.ws.onmessage = (msg) => this.receive(msg.data.toString());
@@ -47,31 +45,30 @@ export class WebsocketClient {
 
 	private receive(msg: string) {
 		this.addMsg(MessageType.RECEIVED, msg);
-        this.receiver(msg);		
+		this.receiver(msg);
 	}
 
-	private onOpen(ev: Event): void {
+	private onOpen(): void {
 		this.addMsg(MessageType.CONNECTION_OPENED, '');
-		this.connected.set(true)
+		this.connected.set(true);
 	}
 
-	private onError(ev: Event): void {
+	private onError(): void {
 		this.addMsg(MessageType.ERROR, '');
 	}
 
-	private onClose(ev: Event): void {
+	private onClose(): void {
 		this.addMsg(MessageType.CONNECTION_CLOSED, '');
 		this.connected.set(false);
 	}
 
 	private addMsg(type: MessageType, payload: string) {
-		this.eventLog.update(old => [...old, new WebsocketEvent(type, payload)]);
+		this.eventLog.update((old) => [...old, new WebsocketEvent(type, payload)]);
 	}
 
 	private disconnect() {
-        console.log("disconnecting");
+		console.log('disconnecting');
 		this.ws?.close();
 		this.connected.set(false);
 	}
 }
-

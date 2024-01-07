@@ -33,8 +33,6 @@ export class OcppClientRequest extends OcppRequest {
 	}
 }
 
-class OcppServerRequest extends OcppRequest {}
-
 export class OcppBaseClient {
 	private pendingClientRequests: Map<string, OcppClientRequest> = new Map();
 
@@ -59,12 +57,6 @@ export class OcppBaseClient {
 
 	public onReceived(data: string): void {
 		if (data[1] == '2') {
-			const callFrame: [number, string, string, object] = JSON.parse(data);
-			const req: OcppServerRequest = new OcppServerRequest(
-				callFrame[1],
-				callFrame[2],
-				callFrame[3]
-			);
 			console.log('received server request');
 		} else if (data[1] == '3') {
 			const callResultFrame: [number, string, object] = JSON.parse(data);

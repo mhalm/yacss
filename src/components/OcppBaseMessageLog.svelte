@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { OcppBaseClient, OcppClientRequest } from '$lib/OcppBaseClient';
+	import { OcppBaseClient } from '$lib/OcppBaseClient';
 
 	export let ocppBaseClient: OcppBaseClient;
 

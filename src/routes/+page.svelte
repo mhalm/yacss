@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Websocket from '../components/websocketLayer/WebsocketLayer.svelte';
 	import OcppBaseMessageLog from '../components/OcppBaseMessageLog.svelte';
 	import { OcppBaseClient } from '$lib/OcppBaseClient';
@@ -17,7 +16,7 @@
 <h1>Welcome to Yacss</h1>
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
 
-<button on:click={(e) => ocppBaseClient.request('StatusNotification', { status: 'Available' })}
+<button on:click={() => ocppBaseClient.request('StatusNotification', { status: 'Available' })}
 	>Send an Ocpp request</button
 >
 
