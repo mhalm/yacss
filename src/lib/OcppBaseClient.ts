@@ -15,15 +15,40 @@ class OcppRequest {
 		this.messageId = messageId;
 		this.actionId = actionId;
 	}
+
+	failed() {
+		return this.response?.failed() ?? false;
+	}
+
+	responded() {
+		return this.response?.succeeded() ?? false;
+	}
 }
 
 class OcppResponse {
-	payload: object | Error;
+	payload: object | undefined;
+	error: string | undefined;
 	timestamp: Date;
 
-	constructor(payload: object | Error) {
-		this.payload = payload;
+	constructor(response: object | Error) {
+		if (response instanceof Error) {
+			this.error = response.message;
+		} else {
+			this.payload = response;
+		}
 		this.timestamp = new Date();
+	}
+
+	failed() {
+		return this.error !== undefined;
+	}
+
+	public errorMessage() {
+		return this.error;
+	}
+
+	succeeded() {
+		return this.payload !== undefined;
 	}
 }
 

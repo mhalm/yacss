@@ -10,7 +10,7 @@
 
 	//dependency injection
 	ocppBaseClient.websocketSender = (x) => websocketClient.send(x);
-	websocketClient.receiver = ocppBaseClient.onReceived;
+	websocketClient.receiver = (x) => ocppBaseClient.onReceived(x);
 </script>
 
 <h1 class="text-3xl font-bold underline">Welcome to Yacss</h1>
@@ -18,8 +18,11 @@
 
 <button
 	class="btn btn-blue"
-	on:click={() => ocppBaseClient.request('StatusNotification', { status: 'Available' })}
-	>Send an Ocpp request</button
+	on:click={() =>
+		ocppBaseClient.request('StatusNotification', {
+			status:
+				'Available dsfäöajdsöfa jasjflasjdlfj sasaljfladsjfldsajfldsaj dsalfjaldsfj ladslfjaldsjf  adslfjldsajf  adslfj dsal faldsjfl j'
+		})}>Send an Ocpp request</button
 >
 
 <OcppBaseMessageLog {ocppBaseClient}></OcppBaseMessageLog>
