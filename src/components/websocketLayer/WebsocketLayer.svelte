@@ -49,6 +49,12 @@
 		<button class="btn btn-blue" on:click={() => websocketClient.simulateReceive(msgFromServer)}
 			>Simulate send from Server</button
 		>
+		<button
+			class="btn btn-blue"
+			on:click={() =>
+				websocketClient.simulateReceive('[2, "msgId12345", "SetChargingProfile", {"limit": 5.0}]')}
+			>Simulate Request from Server</button
+		>
 	</div>
 </div>
 

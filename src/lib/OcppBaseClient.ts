@@ -58,14 +58,24 @@ export class OcppClientRequest extends OcppRequest {
 	}
 }
 
+export class OcppServerRequest extends OcppRequest {
+	constructor(messageId: string, actionId: string, payload: object) {
+		super(messageId, actionId, payload);
+	}
+}
+
 export class OcppBaseClient {
 	private pendingClientRequests: Map<string, OcppClientRequest> = new Map();
 
-	private requests: Writable<OcppClientRequest[]> = writable([]);
+	private clientRequests: Writable<OcppClientRequest[]> = writable([]);
+
+	private serverRequests: Writable<OcppServerRequest[]> = writable([]);
 
 	public websocketSender: (x: string) => void = console.log;
 
-	public clientReqStore = readonly(this.requests);
+	public clientReqStore = readonly(this.clientRequests);
+
+	public serverReqStore = readonly(this.serverRequests);
 
 	public request(actionId: string, payload: object) {
 		const req = new OcppClientRequest(actionId, payload);
@@ -77,12 +87,12 @@ export class OcppBaseClient {
 				req.response = new OcppResponse(e);
 			}
 		}
-		this.requests.set([...this.pendingClientRequests.values()]);
+		this.clientRequests.set([...this.pendingClientRequests.values()]);
 	}
 
 	public onReceived(data: string): void {
 		if (data[1] == '2') {
-			console.log('received server request');
+			this.handleServerRequest(data);
 		} else if (data[1] == '3') {
 			const callResultFrame: [number, string, object] = JSON.parse(data);
 			const messageId = callResultFrame[1];
@@ -92,10 +102,19 @@ export class OcppBaseClient {
 				console.log('Server sent call result without client req: ' + data);
 			} else {
 				pendingClientReq.response = new OcppResponse(payload);
-				this.requests.set([...this.pendingClientRequests.values()]);
+				this.clientRequests.set([...this.pendingClientRequests.values()]);
 			}
 		} else {
 			console.log('Cannot parse data: ', data);
 		}
+	}
+
+	private handleServerRequest(data: string) {
+		const frame: [number, string, string, object] = JSON.parse(data);
+		const messageId = frame[1];
+		const actionId = frame[2];
+		const payload = frame[3];
+		const req = new OcppServerRequest(messageId, actionId, payload);
+		this.serverRequests.update((reqs) => [...reqs, req]);
 	}
 }
