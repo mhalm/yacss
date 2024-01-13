@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { OcppBaseClient } from '$lib/OcppBaseClient';
+	import ServerRequestLog from './ServerRequestLog.svelte';
 	import {
 		Table,
 		TableBody,
@@ -15,7 +16,6 @@
 	export let ocppBaseClient: OcppBaseClient;
 
 	const clientReqs = ocppBaseClient?.clientReqStore;
-	const serverReqs = ocppBaseClient?.serverReqStore;
 </script>
 
 <div class="p-8 mx-auto">
@@ -63,44 +63,6 @@
 				</Table>
 			</div>
 		</div>
-		<div>
-			<h3>Server requests:</h3>
-			<div class="overflow-y-auto">
-				<Table>
-					<TableHead>
-						<TableHeadCell></TableHeadCell>
-						<TableHeadCell>Sent</TableHeadCell>
-						<TableHeadCell>messageId</TableHeadCell>
-						<TableHeadCell>ActionId</TableHeadCell>
-						<TableHeadCell>Payload</TableHeadCell>
-						<TableHeadCell>Response</TableHeadCell>
-					</TableHead>
-					<TableBody>
-						{#each $serverReqs as req}
-							<TableBodyRow>
-								<TableBodyCell
-									>{#if req.failed()}
-										<Badge color="red">Failed</Badge>
-									{:else if req.responded()}
-										<Badge color="green">OK</Badge>
-									{:else}
-										<Badge color="dark">Pending</Badge>
-									{/if}</TableBodyCell
-								>
-								<TableBodyCell>{req.timestamp.toLocaleTimeString()}</TableBodyCell>
-								<TableBodyCell>{req.messageId}</TableBodyCell>
-								<TableBodyCell>{req.actionId}</TableBodyCell>
-								<TableBodyCell class="font-mono">{JSON.stringify(req.payload)}</TableBodyCell>
-								<TableBodyCell>
-									{#if req.response === undefined}
-										<button class=".btn-blue">Respond</button>
-									{/if}
-								</TableBodyCell>
-							</TableBodyRow>
-						{/each}
-					</TableBody>
-				</Table>
-			</div>
-		</div>
+		<ServerRequestLog {ocppBaseClient} />
 	</div>
 </div>
