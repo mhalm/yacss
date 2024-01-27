@@ -11,7 +11,7 @@
 		TableHeadCell,
 		Checkbox,
 		TableSearch,
-		Badge
+		Badge, Button
 	} from 'flowbite-svelte';
 
 	export let ocppBaseClient: OcppBaseClient;
@@ -20,6 +20,10 @@
 
 	let openRow;
 	let response;
+
+    function openResponse(i: int) {
+        openRow = openRow == i ? undefined : i;
+    }
 </script>
 
 <div>
@@ -29,7 +33,7 @@
 			<TableHead>
 				<TableHeadCell></TableHeadCell>
 				<TableHeadCell>Sent</TableHeadCell>
-				<TableHeadCell>messageId</TableHeadCell>
+				<TableHeadCell class="w-2">messageId</TableHeadCell>
 				<TableHeadCell>ActionId</TableHeadCell>
 				<TableHeadCell>Payload</TableHeadCell>
 				<TableHeadCell>Response</TableHeadCell>
@@ -51,19 +55,28 @@
 						<TableBodyCell>{req.actionId}</TableBodyCell>
 						<TableBodyCell class="font-mono">{JSON.stringify(req.payload)}</TableBodyCell>
 						<TableBodyCell>
-							{#if req.response === undefined}
-								<button class=".btn-blue" on:click={() => (openRow = i)}>Respond</button>
+                            <div class="justify-center">
+                                {#if req.response === undefined}
+								<Button class="h-4 w-3/4" on:click={() => (openResponse(i))}>
+                                    {#if openRow === i}/\{:else}Respond{/if}
+                                
+                                </Button>
 							{/if}
+                                    
+                            </div>
+							
 						</TableBodyCell>
 					</TableBodyRow>
 					{#if openRow === i}
 						<TableBodyRow>
-							<TableBodyCell colspan="6" class="p-0">
-								<div class="px-2 py-3" transition:slide={{ duration: 300, axis: 'y' }}>
-									<textarea {response} />
-									<button on:click={() => console.log('responding')}>Send</button>
+							<TableBodyCell colspan="5" class="p-0">
+								<div class="px-6 py-2" transition:slide={{ duration: 300, axis: 'y' }}>
+									<textarea class="font-mono w-full flex-1/4" {response} />
 								</div>
 							</TableBodyCell>
+                            <TableBodyCell>
+								    <Button on:click={() => console.log('responding')}>Send</Button>
+                            </TableBodyCell>
 						</TableBodyRow>
 					{/if}
 				{/each}

@@ -20,7 +20,7 @@
 
 <div class="p-8 mx-auto">
 	<h2>Ocpp</h2>
-	<div class="columns-2">
+	<div class="grid grid-cols-2 gap-4">
 		<div>
 			<h3>Client requests:</h3>
 
@@ -49,7 +49,7 @@
 								<TableBodyCell>{req.timestamp.toLocaleTimeString()}</TableBodyCell>
 								<TableBodyCell>{req.messageId}</TableBodyCell>
 								<TableBodyCell>{req.actionId}</TableBodyCell>
-								<TableBodyCell class="font-mono">{JSON.stringify(req.payload)}</TableBodyCell>
+								<TableBodyCell tdClass="font-mono">{JSON.stringify(req.payload)}</TableBodyCell>
 								<TableBodyCell>
 									{#if req.responded()}
 										{JSON.stringify(req?.response?.payload)}
