@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Websocket from '../components/websocketLayer/WebsocketLayer.svelte';
-	import OcppBaseMessageLog from '../components/OcppBaseMessageLog.svelte';
+	import OcppBaseMessageLog from '../components/ocppLayer/OcppBaseMessageLog.svelte';
 	import { OcppBaseClient } from '$lib/OcppBaseClient';
 	import { WebsocketClient } from '$lib/WebsocketClient';
 

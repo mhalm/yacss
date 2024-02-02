@@ -67,6 +67,8 @@ export class OcppServerRequest extends OcppRequest {
 export class OcppBaseClient {
 	private pendingClientRequests: Map<string, OcppClientRequest> = new Map();
 
+	private serverRequestsByMsgId: Map<string, OcppServerRequest> = new Map();
+
 	private clientRequests: Writable<OcppClientRequest[]> = writable([]);
 
 	private serverRequests: Writable<OcppServerRequest[]> = writable([]);
@@ -90,22 +92,42 @@ export class OcppBaseClient {
 		this.clientRequests.set([...this.pendingClientRequests.values()]);
 	}
 
+	respondTo(msgId: string, payload: object) {
+		const req = this.serverRequestsByMsgId.get(msgId);
+		if (req == undefined) {
+			console.log("No server request with id" + msgId + " known.");
+			return;
+		}
+		if (req.response != null) {
+			console.log("Response already sent for request with id" + msgId + ".");
+			return;
+		}
+		req.response = new OcppResponse(payload);
+		const serializedFrame = JSON.stringify([3, msgId, payload]);
+		this.websocketSender(serializedFrame);
+		this.serverRequests.set([...this.serverRequestsByMsgId.values()]);
+	}
+
 	public onReceived(data: string): void {
 		if (data[1] == '2') {
 			this.handleServerRequest(data);
 		} else if (data[1] == '3') {
-			const callResultFrame: [number, string, object] = JSON.parse(data);
-			const messageId = callResultFrame[1];
-			const payload = callResultFrame[2];
-			const pendingClientReq = this.pendingClientRequests.get(messageId);
-			if (pendingClientReq == undefined) {
-				console.log('Server sent call result without client req: ' + data);
-			} else {
-				pendingClientReq.response = new OcppResponse(payload);
-				this.clientRequests.set([...this.pendingClientRequests.values()]);
-			}
+			this.handleServerResponse(data);
 		} else {
 			console.log('Cannot parse data: ', data);
+		}
+	}
+
+	private handleServerResponse(data: string) {
+		const callResultFrame: [number, string, object] = JSON.parse(data);
+		const messageId = callResultFrame[1];
+		const payload = callResultFrame[2];
+		const pendingClientReq = this.pendingClientRequests.get(messageId);
+		if (pendingClientReq == undefined) {
+			console.log('Server sent call result without client req: ' + data);
+		} else {
+			pendingClientReq.response = new OcppResponse(payload);
+			this.clientRequests.set([...this.pendingClientRequests.values()]);
 		}
 	}
 
@@ -115,6 +137,7 @@ export class OcppBaseClient {
 		const actionId = frame[2];
 		const payload = frame[3];
 		const req = new OcppServerRequest(messageId, actionId, payload);
-		this.serverRequests.update((reqs) => [...reqs, req]);
+		this.serverRequestsByMsgId.set(messageId, req);
+		this.serverRequests.set([...this.serverRequestsByMsgId.values()]);
 	}
 }

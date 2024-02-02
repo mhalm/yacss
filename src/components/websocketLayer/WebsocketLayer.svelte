@@ -1,6 +1,7 @@
 <script lang="ts">
 	import WebsocketEventLog from './WebsocketEventLog.svelte';
 	import type { WebsocketClient } from '$lib/WebsocketClient';
+	import { v4 as uuidv4 } from 'uuid';
 
 	export var websocketClient: WebsocketClient;
 
@@ -52,7 +53,7 @@
 		<button
 			class="btn btn-blue"
 			on:click={() =>
-				websocketClient.simulateReceive('[2, "msgId12345", "SetChargingProfile", {"limit": 5.0}]')}
+				websocketClient.simulateReceive('[2, "' + uuidv4()  +'", "SetChargingProfile", {"limit": 5.0}]')}
 			>Simulate Request from Server</button
 		>
 	</div>

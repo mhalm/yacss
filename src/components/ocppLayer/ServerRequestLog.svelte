@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
-	import { OcppBaseClient } from '$lib/OcppBaseClient';
+	import { OcppBaseClient, OcppServerRequest } from '$lib/OcppBaseClient';
 	import { readable } from 'svelte/store';
 	import {
 		Table,
@@ -9,21 +9,26 @@
 		TableBodyRow,
 		TableHead,
 		TableHeadCell,
-		Checkbox,
-		TableSearch,
-		Badge, Button
+		Badge,
+		Button
 	} from 'flowbite-svelte';
+	import MessageComposer from './MessageComposer.svelte';
 
 	export let ocppBaseClient: OcppBaseClient;
 
 	let serverReqs = ocppBaseClient.serverReqStore;
 
-	let openRow;
+	let openRow = undefined;
 	let response;
 
-    function openResponse(i: int) {
-        openRow = openRow == i ? undefined : i;
-    }
+	function openResponse(i: int) {
+		openRow = openRow == i ? undefined : i;
+	}
+
+	function sendResponse(payload: object, request: OcppServerRequest) {
+		ocppBaseClient.respondTo(request.messageId, payload);
+		openRow = undefined;
+	}
 </script>
 
 <div>
@@ -55,28 +60,26 @@
 						<TableBodyCell>{req.actionId}</TableBodyCell>
 						<TableBodyCell class="font-mono">{JSON.stringify(req.payload)}</TableBodyCell>
 						<TableBodyCell>
-                            <div class="justify-center">
-                                {#if req.response === undefined}
-								<Button class="h-4 w-3/4" on:click={() => (openResponse(i))}>
-                                    {#if openRow === i}/\{:else}Respond{/if}
-                                
-                                </Button>
-							{/if}
-                                    
-                            </div>
-							
+							<div class="justify-center">
+								{#if req.response === undefined}
+									<Button class="h-4 w-3/4" on:click={() => openResponse(i)}>
+										{#if openRow === i}/\{:else}Respond{/if}
+									</Button>
+								{:else}
+									{JSON.stringify(req.response.payload)}
+								{/if}
+							</div>
 						</TableBodyCell>
 					</TableBodyRow>
 					{#if openRow === i}
 						<TableBodyRow>
-							<TableBodyCell colspan="5" class="p-0">
-								<div class="px-6 py-2" transition:slide={{ duration: 300, axis: 'y' }}>
-									<textarea class="font-mono w-full flex-1/4" {response} />
+						 <TableBodyCell colspan="6" class="p-0">
+								<div class="px-6 py-2" transition:slide={{ duration: 500, axis: 'x' }}>
+									<MessageComposer on:send={event => sendResponse(event.detail, req)}/>
 								</div>
 							</TableBodyCell>
-                            <TableBodyCell>
-								    <Button on:click={() => console.log('responding')}>Send</Button>
-                            </TableBodyCell>
+			
+							
 						</TableBodyRow>
 					{/if}
 				{/each}
