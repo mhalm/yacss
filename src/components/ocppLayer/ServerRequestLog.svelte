@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 	import { OcppBaseClient, OcppServerRequest } from '$lib/OcppBaseClient';
-	import { readable } from 'svelte/store';
 	import {
 		Table,
 		TableBody,
@@ -19,9 +18,8 @@
 	let serverReqs = ocppBaseClient.serverReqStore;
 
 	let openRow = undefined;
-	let response;
 
-	function openResponse(i: int) {
+	function openResponse(i: number) {
 		openRow = openRow == i ? undefined : i;
 	}
 
@@ -73,13 +71,11 @@
 					</TableBodyRow>
 					{#if openRow === i}
 						<TableBodyRow>
-						 <TableBodyCell colspan="6" class="p-0">
+							<TableBodyCell colspan="6" class="p-0">
 								<div class="px-6 py-2" transition:slide={{ duration: 500, axis: 'x' }}>
-									<MessageComposer on:send={event => sendResponse(event.detail, req)}/>
+									<MessageComposer on:send={(event) => sendResponse(event.detail, req)} />
 								</div>
 							</TableBodyCell>
-			
-							
 						</TableBodyRow>
 					{/if}
 				{/each}

@@ -95,11 +95,11 @@ export class OcppBaseClient {
 	respondTo(msgId: string, payload: object) {
 		const req = this.serverRequestsByMsgId.get(msgId);
 		if (req == undefined) {
-			console.log("No server request with id" + msgId + " known.");
+			console.log('No server request with id' + msgId + ' known.');
 			return;
 		}
 		if (req.response != null) {
-			console.log("Response already sent for request with id" + msgId + ".");
+			console.log('Response already sent for request with id' + msgId + '.');
 			return;
 		}
 		req.response = new OcppResponse(payload);
