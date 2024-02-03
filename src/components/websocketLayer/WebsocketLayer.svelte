@@ -53,8 +53,11 @@
 		<button
 			class="btn btn-blue"
 			on:click={() =>
-				websocketClient.simulateReceive('[2, "' + uuidv4()  +'", "SetChargingProfile", {"limit": 5.0}]')}
-			>Simulate Request from Server</button
+				websocketClient.simulateReceive(
+					'[2, "' +
+						uuidv4() +
+						'", "SetChargingProfile", {"limit": 5.0, "period" : { "from" : "00:00:00", "to" : "01:00:00"}}]'
+				)}>Simulate Request from Server</button
 		>
 	</div>
 </div>
