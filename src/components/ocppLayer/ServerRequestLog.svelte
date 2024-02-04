@@ -1,16 +1,11 @@
 <script lang="ts">
 	import { OcppBaseClient, OcppServerRequest } from '$lib/OcppBaseClient';
-	import { readable } from 'svelte/store';
 	import {
 		Label,
 		Table,
 		TableBody,
-		TableBodyCell,
-		TableBodyRow,
 		TableHead,
 		TableHeadCell,
-		Badge,
-		Button
 	} from 'flowbite-svelte';
 	import RequestRow from './RequestRow.svelte';
 
@@ -19,7 +14,6 @@
 	let serverReqs = ocppBaseClient.serverReqStore;
 
 	let openRow: number | undefined = undefined;
-	let response;
 </script>
 
 <div>

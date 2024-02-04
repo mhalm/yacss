@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { OcppBaseClient } from '$lib/OcppBaseClient';
-	import MessageComposer from './MessageComposer.svelte';
 	import ServerRequestLog from './ServerRequestLog.svelte';
 	import {
 		Table,
@@ -9,8 +8,6 @@
 		TableBodyRow,
 		TableHead,
 		TableHeadCell,
-		Checkbox,
-		TableSearch,
 		Badge
 	} from 'flowbite-svelte';
 

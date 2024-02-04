@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Template } from '$lib/templating';
-	import { Listgroup, ListgroupItem, Textarea, Button, Label } from 'flowbite-svelte';
+	import { Listgroup, ListgroupItem, Textarea, Button } from 'flowbite-svelte';
 	import { PapperPlaneOutline } from 'flowbite-svelte-icons';
 	import { createEventDispatcher } from 'svelte';
 

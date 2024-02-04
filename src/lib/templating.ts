@@ -8,4 +8,4 @@ export class Template {
 	}
 }
 
-class TemplateRepository {}
+// class TemplateRepository {}
