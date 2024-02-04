@@ -1,12 +1,6 @@
 <script lang="ts">
 	import { OcppBaseClient, OcppServerRequest } from '$lib/OcppBaseClient';
-	import {
-		Label,
-		Table,
-		TableBody,
-		TableHead,
-		TableHeadCell,
-	} from 'flowbite-svelte';
+	import { Label, Table, TableBody, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import RequestRow from './RequestRow.svelte';
 
 	export let ocppBaseClient: OcppBaseClient;
