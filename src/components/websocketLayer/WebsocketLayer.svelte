@@ -65,9 +65,6 @@
 			<div slot="header">Server simulation</div>
 			<div>
 				<input bind:value={payloadToSend} />
-				<button class="btn btn-blue" on:click={onSendButtonClicked} disabled={!canSend}
-					>Send!</button
-				>
 			</div>
 
 			<h2>Simulate server send</h2>
