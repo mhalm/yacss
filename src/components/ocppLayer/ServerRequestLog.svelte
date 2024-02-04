@@ -16,8 +16,8 @@
 		<Table>
 			<TableHead>
 				<TableHeadCell>ActionId</TableHeadCell>
-				<TableHeadCell>Payload</TableHeadCell>
-				<TableHeadCell>Response</TableHeadCell>
+				<TableHeadCell class="basis-2/5">Payload</TableHeadCell>
+				<TableHeadCell class="w-64">Response</TableHeadCell>
 			</TableHead>
 			<TableBody>
 				{#each $serverReqs as req, i}

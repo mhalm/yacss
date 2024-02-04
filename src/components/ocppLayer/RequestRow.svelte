@@ -56,7 +56,6 @@
 					<div class="basis-1/2">
 						{req.actionId} <i class="font-light">({req.messageId})</i>
 					</div>
-
 					<div class="basis-1/2 flex justify-end">
 						<a on:click={toggleOpen}><CirclePlusOutline class="rotate-45" /></a>
 					</div>

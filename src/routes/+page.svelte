@@ -13,20 +13,22 @@
 	websocketClient.receiver = (x) => ocppBaseClient.onReceived(x);
 </script>
 
-<h1 class="text-3xl font-bold underline">Welcome to Yacss</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<div class="p-4">
+	<h1 class="text-3xl font-bold underline">Welcome to Yacss</h1>
+	<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
 
-<button
-	class="btn btn-blue"
-	on:click={() =>
-		ocppBaseClient.request('StatusNotification', {
-			status:
-				'Available dsfäöajdsöfa jasjflasjdlfj sasaljfladsjfldsajfldsaj dsalfjaldsfj ladslfjaldsjf  adslfjldsajf  adslfj dsal faldsjfl j'
-		})}>Send an Ocpp request</button
->
+	<button
+		class="btn btn-blue"
+		on:click={() =>
+			ocppBaseClient.request('StatusNotification', {
+				status:
+					'Available dsfäöajdsöfa jasjflasjdlfj sasaljfladsjfldsajfldsaj dsalfjaldsfj ladslfjaldsjf  adslfjldsajf  adslfj dsal faldsjfl j'
+			})}>Send an Ocpp request</button
+	>
 
-<OcppBaseMessageLog {ocppBaseClient}></OcppBaseMessageLog>
-<Websocket {websocketClient} />
+	<OcppBaseMessageLog {ocppBaseClient}></OcppBaseMessageLog>
+	<Websocket {websocketClient} />
+</div>
 
 <style lang="postcss">
 	.btn {
@@ -38,7 +40,7 @@
 	.btn-blue:hover {
 		@apply bg-blue-700;
 	}
-	:global(html) {
+	/* :global(html) {
 		background-color: theme(colors.gray.100);
-	}
+	} */
 </style>

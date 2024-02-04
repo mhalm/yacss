@@ -15,7 +15,10 @@
 
 	let sendDispatcher = createEventDispatcher();
 
-	let templates = [new Template('empty', '{}'), new Template('Accepted', '{"status":"Accepted"}')];
+	export let templates = [
+		new Template('empty', '{}'),
+		new Template('Accepted', '{"status":"Accepted"}')
+	];
 
 	let templateItems: TemplateItem[] = templates.map((t) => {
 		return { template: t, selected: false };

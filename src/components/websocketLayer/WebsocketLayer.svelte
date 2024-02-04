@@ -1,7 +1,10 @@
 <script lang="ts">
 	import WebsocketEventLog from './WebsocketEventLog.svelte';
+	import { AccordionItem, Accordion, Button, Input } from 'flowbite-svelte';
 	import type { WebsocketClient } from '$lib/WebsocketClient';
 	import { v4 as uuidv4 } from 'uuid';
+	import MessageComposer from '../ocppLayer/MessageComposer.svelte';
+	import { Template } from '$lib/templating';
 
 	export var websocketClient: WebsocketClient;
 
@@ -17,6 +20,16 @@
 
 	let url: string = 'wss://socketsbay.com/wss/v2/1/demo/';
 
+	let templates = [
+		new Template(
+			'SetChargingProfile',
+			'[2, "' +
+				uuidv4() +
+				'", "SetChargingProfileRequest", {"limit": 5.0, "period" : { "from" : "00:00:00", "to" : "01:00:00"}}]'
+		),
+		new Template('Response', '[3, , {}]')
+	];
+
 	function toggleConnection() {
 		websocketClient.toggleConnection(url);
 	}
@@ -31,45 +44,39 @@
 </script>
 
 <div>
-	<h2>Websocket</h2>
-	Url:<input bind:value={url} disabled={$connected} />
-	<button class="btn btn-blue" on:click={toggleConnection}>
-		{$connected ? 'Disconnect' : 'Connect'}
-	</button>
+	<Accordion class="bg-white" multiple>
+		<AccordionItem>
+			<div slot="header" class="flex flex-row gap-4 items-center">
+				<div>Websocket</div>
+				<div class="w-72" on:click|stopPropagation>
+					<Input class="w-full" bind:value={url} disabled={$connected} />
+				</div>
+				<div on:click|stopPropagation>
+					<Button class="sm" on:click={toggleConnection}>
+						{$connected ? 'Disconnect' : 'Connect'}
+					</Button>
+				</div>
+			</div>
 
-	<WebsocketEventLog data={$messages} />
+			<WebsocketEventLog data={$messages} />
+		</AccordionItem>
 
-	<div>
-		<input bind:value={payloadToSend} />
-		<button class="btn btn-blue" on:click={onSendButtonClicked} disabled={!canSend}>Send!</button>
-	</div>
+		<AccordionItem>
+			<div slot="header">Server simulation</div>
+			<div>
+				<input bind:value={payloadToSend} />
+				<button class="btn btn-blue" on:click={onSendButtonClicked} disabled={!canSend}
+					>Send!</button
+				>
+			</div>
 
-	<h2>Simulate server send</h2>
-	<div>
-		<textarea bind:value={msgFromServer} />
-		<button class="btn btn-blue" on:click={() => websocketClient.simulateReceive(msgFromServer)}
-			>Simulate send from Server</button
-		>
-		<button
-			class="btn btn-blue"
-			on:click={() =>
-				websocketClient.simulateReceive(
-					'[2, "' +
-						uuidv4() +
-						'", "SetChargingProfile", {"limit": 5.0, "period" : { "from" : "00:00:00", "to" : "01:00:00"}}]'
-				)}>Simulate Request from Server</button
-		>
-	</div>
+			<h2>Simulate server send</h2>
+			<div>
+				<MessageComposer
+					{templates}
+					on:send={(e) => websocketClient.simulateReceive(JSON.stringify(e.detail))}
+				/>
+			</div>
+		</AccordionItem>
+	</Accordion>
 </div>
-
-<style lang="postcss">
-	.btn {
-		@apply font-bold py-2 px-4 rounded;
-	}
-	.btn-blue {
-		@apply bg-blue-500 text-white;
-	}
-	.btn-blue:hover {
-		@apply bg-blue-700;
-	}
-</style>

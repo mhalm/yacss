@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { OcppBaseClient } from '$lib/OcppBaseClient';
+	import { OcppBaseClient, OcppServerRequest } from '$lib/OcppBaseClient';
+	import MessageComposer from './MessageComposer.svelte';
 	import ServerRequestLog from './ServerRequestLog.svelte';
 	import {
 		Table,
@@ -19,9 +20,10 @@
 <div class="p-8 mx-auto">
 	<h2>Ocpp</h2>
 	<div class="grid grid-cols-2 gap-4">
-		<div>
-			<h3>Client requests:</h3>
-
+		<div class="flex flex-col gap-3">
+			<div>
+				<h3>Client requests:</h3>
+			</div>
 			<div class="overflow-y-auto h-64">
 				<Table>
 					<TableHead>
@@ -59,6 +61,9 @@
 						{/each}
 					</TableBody>
 				</Table>
+			</div>
+			<div class="h-32">
+				<MessageComposer />
 			</div>
 		</div>
 		<ServerRequestLog {ocppBaseClient} />
