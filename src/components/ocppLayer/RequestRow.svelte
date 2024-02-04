@@ -62,17 +62,23 @@
 					</div>
 				</div>
 				<div class="flex flex-row h-48 gap-2">
-					<div class="basis-1/2">
+					<div class="flex flex-col basis-1/2 gap-1">
 						Request at {req.timestamp.toLocaleTimeString()}
-						<Payload payload={req.payload} />
+						<div class="grow">
+							<Payload payload={req.payload} />
+						</div>
 					</div>
-					<div class="basis-1/2">
-						Response <StatusBadge {req} />
-						{#if req.response !== undefined}
-							<Payload payload={req.response.payload} />
-						{:else}
-							<MessageComposer on:send={(event) => sendResponse(event.detail, req)} />
-						{/if}
+					<div class="flex flex-col basis-1/2 h-full gap-1">
+						<div class="">
+							Response <StatusBadge {req} />
+						</div>
+						<div class="grow">
+							{#if req.response !== undefined}
+								<Payload payload={req.response.payload} />
+							{:else}
+								<MessageComposer on:send={(event) => sendResponse(event.detail, req)} />
+							{/if}
+						</div>
 					</div>
 				</div>
 			</div>

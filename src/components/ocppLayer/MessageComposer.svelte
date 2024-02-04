@@ -1,6 +1,13 @@
 <script lang="ts">
 	import { Template } from '$lib/templating';
-	import { Listgroup, ListgroupItem, Textarea, Button } from 'flowbite-svelte';
+	import {
+		Listgroup,
+		ListgroupItem,
+		Textarea,
+		Button,
+		Alert,
+		ToolbarButton
+	} from 'flowbite-svelte';
 	import { PapperPlaneOutline } from 'flowbite-svelte-icons';
 	import { createEventDispatcher } from 'svelte';
 
@@ -32,20 +39,34 @@
 	}
 </script>
 
-<div class=" flex flex-row gap-3 h-full">
-	<Listgroup id="templateList" active class="overflow-auto w-48 h-full">
-		{#each templateItems as item}
-			<ListgroupItem on:click={(e) => toggleTemplate(item)} bind:current={item.selected}
-				>{item.template.name}</ListgroupItem
-			>
-		{/each}
-	</Listgroup>
+<Alert color="dark" class="h-full">
+	<div class=" flex flex-row gap-3 h-full">
+		<Listgroup id="templateList" active class="overflow-auto w-48 h-full">
+			{#each templateItems as item}
+				<ListgroupItem
+					class="py-1"
+					on:click={(e) => toggleTemplate(item)}
+					bind:current={item.selected}>{item.template.name}</ListgroupItem
+				>
+			{/each}
+		</Listgroup>
 
-	<Textarea bind:value={payloadToSend} class="font-mono h-full">
-		<div slot="footer" class="flex items-center justify-end">
-			<Button size="sm" on:click={send}>
-				<PapperPlaneOutline class="w-5 h-5 rotate-45" />
-			</Button>
-		</div>
-	</Textarea>
-</div>
+		<Textarea bind:value={payloadToSend} class="font-mono h-full">
+			<!-- <div slot="header" class="flex items-center justify-end">
+                <Button size="sm" on:click={send}>
+                    <PapperPlaneOutline class="w-5 h-5 rotate-45" />
+                </Button>
+            </div> -->
+		</Textarea>
+
+		<ToolbarButton type="submit" class="text-primary-600 dark:text-primary-500" on:click={send}>
+			<PapperPlaneOutline class="w-5 h-5 rotate-45" />
+			<span class="sr-only">Send message</span>
+		</ToolbarButton>
+		<!-- <div class="flex flex-col justify-end">
+            <div>
+                <PapperPlaneOutline class="w-5 h-5 rotate-45" />  
+            </div>
+        </div> -->
+	</div>
+</Alert>
