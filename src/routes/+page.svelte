@@ -3,6 +3,7 @@
 	import OcppBaseMessageLog from '../components/ocppLayer/OcppBaseMessageLog.svelte';
 	import { OcppBaseClient } from '$lib/OcppBaseClient';
 	import { WebsocketClient } from '$lib/WebsocketClient';
+	import { Accordion, Button, Heading } from 'flowbite-svelte';
 
 	//create the headless ocpp classes
 	var websocketClient = new WebsocketClient();
@@ -14,20 +15,10 @@
 </script>
 
 <div class="p-4">
-	<h1 class="text-3xl font-bold underline">Welcome to Yacss</h1>
-	<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-
-	<button
-		class="btn btn-blue"
-		on:click={() =>
-			ocppBaseClient.request('StatusNotification', {
-				status:
-					'Available dsfäöajdsöfa jasjflasjdlfj sasaljfladsjfldsajfldsaj dsalfjaldsfj ladslfjaldsjf  adslfjldsajf  adslfj dsal faldsjfl j'
-			})}>Send an Ocpp request</button
-	>
-
-	<OcppBaseMessageLog {ocppBaseClient}></OcppBaseMessageLog>
-	<Websocket {websocketClient} />
+	<Accordion class="bg-white" multiple>
+		<OcppBaseMessageLog {ocppBaseClient}></OcppBaseMessageLog>
+		<Websocket {websocketClient} />
+	</Accordion>
 </div>
 
 <style lang="postcss">
@@ -40,7 +31,7 @@
 	.btn-blue:hover {
 		@apply bg-blue-700;
 	}
-	/* :global(html) {
+	:global(html) {
 		background-color: theme(colors.gray.100);
-	} */
+	}
 </style>

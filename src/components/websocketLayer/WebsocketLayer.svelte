@@ -43,37 +43,34 @@
 	}
 </script>
 
-<div>
-	<Accordion class="bg-white" multiple>
-		<AccordionItem>
-			<div slot="header" class="flex flex-row gap-4 items-center">
-				<div>Websocket</div>
-				<div class="w-72" on:click|stopPropagation>
-					<Input class="w-full" bind:value={url} disabled={$connected} />
-				</div>
-				<div on:click|stopPropagation>
-					<Button class="sm" on:click={toggleConnection}>
-						{$connected ? 'Disconnect' : 'Connect'}
-					</Button>
-				</div>
-			</div>
+<AccordionItem>
+	<div slot="header" class="flex flex-row gap-4 items-center">
+		<div>Websocket</div>
+		<div class="w-72" on:click|stopPropagation>
+			<Input class="w-full" bind:value={url} disabled={$connected} />
+		</div>
+		<div on:click|stopPropagation>
+			<Button class="sm" on:click={toggleConnection}>
+				{$connected ? 'Disconnect' : 'Connect'}
+			</Button>
+		</div>
+	</div>
 
-			<WebsocketEventLog data={$messages} />
-		</AccordionItem>
+	<WebsocketEventLog data={$messages} />
+</AccordionItem>
 
-		<AccordionItem>
-			<div slot="header">Server simulation</div>
-			<div>
-				<input bind:value={payloadToSend} />
-			</div>
+<AccordionItem>
+	<div slot="header">Server simulation</div>
+	<div>
+		<input bind:value={payloadToSend} />
+		<button class="btn btn-blue" on:click={onSendButtonClicked} disabled={!canSend}>Send!</button>
+	</div>
 
-			<h2>Simulate server send</h2>
-			<div>
-				<MessageComposer
-					{templates}
-					on:send={(e) => websocketClient.simulateReceive(JSON.stringify(e.detail))}
-				/>
-			</div>
-		</AccordionItem>
-	</Accordion>
-</div>
+	<h2>Simulate server send</h2>
+	<div>
+		<MessageComposer
+			{templates}
+			on:send={(e) => websocketClient.simulateReceive(JSON.stringify(e.detail))}
+		/>
+	</div>
+</AccordionItem>
