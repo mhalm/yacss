@@ -1,35 +1,35 @@
 <script lang="ts">
-	import { OcppBaseClient, OcppServerRequest } from '$lib/OcppBaseClient';
+	import { OcppBaseClient, OcppRequest } from '$lib/OcppBaseClient';
 	import { Label, Table, TableBody, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import RequestRow from './RequestRow.svelte';
 
-	export let ocppBaseClient: OcppBaseClient;
-
-	let serverReqs = ocppBaseClient.serverReqStore;
+	export let requests: OcppRequest[];
 
 	let openRow: number | undefined = undefined;
 </script>
 
 <div>
-	<Label for="serverReqTable">Server requests:</Label>
 	<div id="serverReqTable" class="overflow-y-auto">
 		<Table>
 			<TableHead>
 				<TableHeadCell>ActionId</TableHeadCell>
-				<TableHeadCell class="basis-2/5">Payload</TableHeadCell>
-				<TableHeadCell class="w-64">Response</TableHeadCell>
+				<TableHeadCell class="w-2/5">Payload</TableHeadCell>
+				<TableHeadCell class="w-2/5">Response</TableHeadCell>
 			</TableHead>
 			<TableBody>
-				{#each $serverReqs as req, i}
+				{#each requests as req, i}
 					<RequestRow
 						{req}
-						{ocppBaseClient}
 						opened={openRow === i}
 						on:open={(e) => {
 							console.log(i);
 							openRow = i;
 						}}
-					/>
+					>
+						<div slot="missingResponse">
+							<slot name="missingResponse" {req} />
+						</div>
+					</RequestRow>
 				{/each}
 			</TableBody>
 		</Table>

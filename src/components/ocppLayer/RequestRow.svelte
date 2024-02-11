@@ -27,13 +27,6 @@
 
 	let dispatcher = createEventDispatcher();
 
-	export let ocppBaseClient: OcppBaseClient;
-
-	function sendResponse(payload: object, request: OcppServerRequest) {
-		ocppBaseClient.respondTo(request.messageId, payload);
-		req = req;
-	}
-
 	function toggleOpen() {
 		if (opened) {
 			opened = false;
@@ -75,7 +68,7 @@
 							{#if req.response !== undefined}
 								<Payload payload={req.response.payload} />
 							{:else}
-								<MessageComposer on:send={(event) => sendResponse(event.detail, req)} />
+								<slot name="missingResponse" {req} />
 							{/if}
 						</div>
 					</div>
@@ -86,13 +79,13 @@
 {:else}
 	<TableBodyRow on:click={toggleOpen}>
 		<TableBodyCell>{req.actionId}</TableBodyCell>
-		<TableBodyCell>
+		<TableBodyCell class="truncate">
 			<div class="font-mono truncate">
 				{JSON.stringify(req.payload)}
 			</div>
 		</TableBodyCell>
 		<TableBodyCell>
-			<div class="truncate">
+			<div>
 				<StatusBadge {req} />
 				{#if req.response !== undefined}
 					<span class="font-mono truncate">

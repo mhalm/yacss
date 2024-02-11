@@ -2,7 +2,7 @@ import { readonly, writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 
-class OcppRequest {
+export class OcppRequest {
 	payload: object;
 	timestamp: Date;
 	messageId: string; //a UUID
@@ -78,6 +78,10 @@ export class OcppBaseClient {
 	public clientReqStore = readonly(this.clientRequests);
 
 	public serverReqStore = readonly(this.serverRequests);
+
+	public getServerReqStore() {
+		return this.serverReqStore;
+	}
 
 	public request(actionId: string, payload: object) {
 		const req = new OcppClientRequest(actionId, payload);
