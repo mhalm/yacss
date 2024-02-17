@@ -1,6 +1,6 @@
 <script lang="ts">
 	import WebsocketEventLog from './WebsocketEventLog.svelte';
-	import { AccordionItem, Accordion, Button, Input } from 'flowbite-svelte';
+	import { AccordionItem, Button, Input } from 'flowbite-svelte';
 	import type { WebsocketClient } from '$lib/WebsocketClient';
 	import { v4 as uuidv4 } from 'uuid';
 	import MessageComposer from '../ocppLayer/MessageComposer.svelte';
@@ -15,8 +15,6 @@
 	let payloadToSend: string;
 
 	$: canSend = payloadToSend != '' && payloadToSend != null && $connected;
-
-	let msgFromServer: string;
 
 	let url: string = 'wss://socketsbay.com/wss/v2/1/demo/';
 
@@ -46,10 +44,16 @@
 <AccordionItem>
 	<div slot="header" class="flex flex-row gap-4 items-center">
 		<div>Websocket</div>
-		<div class="w-72" on:click|stopPropagation>
+		<div
+			class="w-72"
+			on:click|stopPropagation
+			on:keydown|stopPropagation
+			role="button"
+			tabindex="0"
+		>
 			<Input class="w-full" bind:value={url} disabled={$connected} />
 		</div>
-		<div on:click|stopPropagation>
+		<div on:click|stopPropagation on:keydown|stopPropagation role="button" tabindex="0">
 			<Button class="sm" on:click={toggleConnection}>
 				{$connected ? 'Disconnect' : 'Connect'}
 			</Button>
@@ -63,7 +67,9 @@
 	<div slot="header">Server simulation</div>
 	<div>
 		<input bind:value={payloadToSend} />
-		<button class="btn btn-blue" on:click={onSendButtonClicked} disabled={!canSend}>Send!</button>
+		<button type="button" class="btn btn-blue" on:click={onSendButtonClicked} disabled={!canSend}
+			>Send!</button
+		>
 	</div>
 
 	<h2>Simulate server send</h2>

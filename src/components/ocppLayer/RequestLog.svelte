@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { OcppBaseClient, OcppRequest } from '$lib/OcppBaseClient';
-	import { Label, Table, TableBody, TableHead, TableHeadCell } from 'flowbite-svelte';
+	import { OcppRequest } from '$lib/OcppBaseClient';
+	import { Table, TableBody, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import RequestRow from './RequestRow.svelte';
 
 	export let requests: OcppRequest[];
@@ -21,7 +21,7 @@
 					<RequestRow
 						{req}
 						opened={openRow === i}
-						on:open={(e) => {
+						on:open={() => {
 							console.log(i);
 							openRow = i;
 						}}

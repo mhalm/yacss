@@ -1,13 +1,6 @@
 <script lang="ts">
 	import { Template } from '$lib/templating';
-	import {
-		Listgroup,
-		ListgroupItem,
-		Textarea,
-		Button,
-		Alert,
-		ToolbarButton
-	} from 'flowbite-svelte';
+	import { Listgroup, ListgroupItem, Textarea, Alert, ToolbarButton } from 'flowbite-svelte';
 	import { PapperPlaneOutline } from 'flowbite-svelte-icons';
 	import { createEventDispatcher } from 'svelte';
 
@@ -15,6 +8,7 @@
 
 	let sendDispatcher = createEventDispatcher();
 
+	// default
 	export let templates = [
 		new Template('empty', '{}'),
 		new Template('Accepted', '{"status":"Accepted"}')
@@ -48,7 +42,7 @@
 			{#each templateItems as item}
 				<ListgroupItem
 					class="py-1"
-					on:click={(e) => toggleTemplate(item)}
+					on:click={() => toggleTemplate(item)}
 					bind:current={item.selected}>{item.template.name}</ListgroupItem
 				>
 			{/each}

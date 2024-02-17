@@ -1,21 +1,7 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
-	import type { OcppBaseClient, OcppServerRequest } from '$lib/OcppBaseClient';
-
-	import MessageComposer from './MessageComposer.svelte';
-	import {
-		Alert,
-		Table,
-		TableBody,
-		TableBodyCell,
-		TableBodyRow,
-		TableHead,
-		TableHeadCell,
-		Badge,
-		Textarea,
-		Label,
-		Button
-	} from 'flowbite-svelte';
+	import type { OcppServerRequest } from '$lib/OcppBaseClient';
+	import { TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { CirclePlusOutline } from 'flowbite-svelte-icons';
 	import { createEventDispatcher } from 'svelte';
 	import StatusBadge from './StatusBadge.svelte';
@@ -50,7 +36,9 @@
 						{req.actionId} <i class="font-light">({req.messageId})</i>
 					</div>
 					<div class="basis-1/2 flex justify-end">
-						<a on:click={toggleOpen}><CirclePlusOutline class="rotate-45" /></a>
+						<button type="button" on:click={toggleOpen}
+							><CirclePlusOutline class="rotate-45" /></button
+						>
 					</div>
 				</div>
 				<div class="flex flex-row h-48 gap-2">

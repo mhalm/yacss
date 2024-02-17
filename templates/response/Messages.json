@@ -1,0 +1,23 @@
+[
+	{
+		"name": "Profile Accepted",
+		"type": "SetChargingProfileResponse",
+		"content": {
+			"status": "Accepted"
+		}
+	},
+	{
+		"name": "Profile Not Supported",
+		"type": "SetChargingProfileResponse",
+		"content": {
+			"status": "NotSupported"
+		}
+	},
+	{
+		"name": "Profile Rejected",
+		"type": "SetChargingProfileResponse",
+		"content": {
+			"status": "Rejected"
+		}
+	}
+]

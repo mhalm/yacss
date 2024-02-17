@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { OcppClientRequest, OcppServerRequest } from '$lib/OcppBaseClient';
+	import type { OcppServerRequest } from '$lib/OcppBaseClient';
 	import { Badge } from 'flowbite-svelte';
 
 	export let req: OcppServerRequest;
