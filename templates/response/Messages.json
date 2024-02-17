@@ -19,5 +19,19 @@
 		"content": {
 			"status": "Rejected"
 		}
+	},
+	{
+		"name": "Remote Start Accepted",
+		"type": "RemoteStopTransactionResponse",
+		"content": {
+			"status": "Accepted"
+		}
+	},
+	{
+		"name": "Remote Start Rejected",
+		"type": "RemoteStopTransactionResponse",
+		"content": {
+			"status": "Rejected"
+		}
 	}
 ]

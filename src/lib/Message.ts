@@ -1,5 +1,6 @@
 export enum MessageType {
-	SET_CHARGING_PROFILE_RESPONSE = 'SetChargingProfileResponse'
+	SET_CHARGING_PROFILE_RESPONSE = 'SetChargingProfileResponse',
+	REMOTE_STOP_TRANSACTION_RESPONSE = 'RemoteStopTransactionResponse'
 }
 
 function newMessageTypeFrom(value: string): MessageType {

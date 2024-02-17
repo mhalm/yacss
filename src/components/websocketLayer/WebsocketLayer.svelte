@@ -25,6 +25,10 @@
 				uuidv4() +
 				'", "SetChargingProfileRequest", {"limit": 5.0, "period" : { "from" : "00:00:00", "to" : "01:00:00"}}]'
 		),
+		new Template(
+			'RemoteStopTransactionRequest',
+			'[2, "' + uuidv4() + '", "RemoteStopTransactionRequest", {"transactionId": 123}]'
+		),
 		new Template('Response', '[3, , {}]')
 	];
 

@@ -8,18 +8,13 @@
 
 	let sendDispatcher = createEventDispatcher();
 
-	// default
-	export let templates = [
-		new Template('empty', '{}'),
-		new Template('Accepted', '{"status":"Accepted"}')
-	];
+	export let templates: Template[];
 
-	let templateItems: TemplateItem[] = templates.map((t) => {
+	let templateItems = templates.map((t) => {
 		return { template: t, selected: false };
 	});
 
 	templateItems[0].selected = true;
-
 	let payloadToSend = templateItems[0].template.content;
 
 	function toggleTemplate(item: TemplateItem) {

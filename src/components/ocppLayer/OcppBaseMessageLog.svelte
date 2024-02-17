@@ -22,6 +22,9 @@
 		if (actionId == 'SetChargingProfileRequest') {
 			return MessageType.SET_CHARGING_PROFILE_RESPONSE;
 		}
+		if (actionId == 'RemoteStopTransactionRequest') {
+			return MessageType.REMOTE_STOP_TRANSACTION_RESPONSE;
+		}
 		// Default case
 		return MessageType.SET_CHARGING_PROFILE_RESPONSE;
 	}
@@ -51,7 +54,10 @@
 				</RequestLog>
 			</div>
 			<div class="h-32">
-				<MessageComposer on:send={(e) => ocppBaseClient.request('StatusNotification', e.detail)} />
+				<MessageComposer
+					templates={templates('SetChargingProfileRequest')}
+					on:send={(e) => ocppBaseClient.request('StatusNotification', e.detail)}
+				/>
 			</div>
 		</div>
 	</div>
