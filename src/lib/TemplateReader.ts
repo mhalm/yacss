@@ -1,5 +1,7 @@
 import messageJSON from '../../templates/response/Messages.json';
+import schemaOne from '../../schemas/SetChargingProfileResponse.json';
 import { Message, MessageType, type MessageJSON } from './Message';
+import { OCPPRequestGenerator } from './OCPPRequestGenerator';
 export class TemplateReader {
 	messageJSONs: MessageJSON[] = messageJSON;
 	messages: Message[];
@@ -19,6 +21,16 @@ export class TemplateReader {
 		const result = this.messagesMap.get(type);
 		if (result == null) {
 			return [];
+		}
+		if (type === MessageType.SET_CHARGING_PROFILE_RESPONSE) {
+			const generator = new OCPPRequestGenerator(schemaOne);
+			const myMessage: MessageJSON = {
+				name: 'from schema',
+				type: 'SetChargingProfileResponse',
+				content: JSON
+			};
+			myMessage.content = generator.generateRequest();
+			result.push(new Message(myMessage));
 		}
 		return result;
 	}
